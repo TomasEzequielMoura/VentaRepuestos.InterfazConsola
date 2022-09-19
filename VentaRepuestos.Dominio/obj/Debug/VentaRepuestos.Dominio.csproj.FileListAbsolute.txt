@@ -1,0 +1,6 @@
+E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.Dominio\bin\Debug\VentaRepuestos.Dominio.dll
+E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.Dominio\bin\Debug\VentaRepuestos.Dominio.pdb
+E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.Dominio\obj\Debug\VentaRepuestos.Dominio.csproj.AssemblyReference.cache
+E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.Dominio\obj\Debug\VentaRepuestos.Dominio.csproj.CoreCompileInputs.cache
+E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.Dominio\obj\Debug\VentaRepuestos.Dominio.dll
+E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.Dominio\obj\Debug\VentaRepuestos.Dominio.pdb

@@ -41,8 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Categoria.cs" />
-    <Compile Include="Repuesto.cs" />
+    <Compile Include="Entidades\Categoria.cs" />
+    <Compile Include="Entidades\Repuesto.cs" />
+    <Compile Include="Exceptions\CategoriaInexistenteException.cs" />
+    <Compile Include="Exceptions\RepuestoInexistenteException.cs" />
+    <Compile Include="Exceptions\StockCompletoException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VentaRepuestos.cs" />
   </ItemGroup>
