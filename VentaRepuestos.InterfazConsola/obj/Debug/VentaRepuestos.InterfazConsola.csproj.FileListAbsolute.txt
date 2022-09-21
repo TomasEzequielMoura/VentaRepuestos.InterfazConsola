@@ -7,4 +7,3 @@ E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicac
 E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.InterfazConsola\bin\Debug\VentaRepuestos.Dominio.pdb
 E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.InterfazConsola\obj\Debug\VentaRepuestos.InterfazConsola.exe
 E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.InterfazConsola\obj\Debug\VentaRepuestos.InterfazConsola.pdb
-E:\OneDrive\Escritorio\Tomi\facultad\4TO AÑO\2do cuatri\Construccion de aplicaciones informaticas\Github\VentaRepuestos.InterfazConsola\VentaRepuestos.InterfazConsola\obj\Debug\VentaRepuestos.InterfazConsola.csproj.CopyComplete

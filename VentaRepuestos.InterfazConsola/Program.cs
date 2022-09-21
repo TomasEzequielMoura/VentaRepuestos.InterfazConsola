@@ -14,15 +14,18 @@ namespace VentaRepuestos.InterfazConsola
 {
     class Program
     {
-        public static Dominio.VentaRepuestos InstanciaAgregarRepuesto;
+        public static Dominio.VentaRepuestos InstanciaVentaRepuestos;
         public static List<Categoria> ListaCategorias;
+        public static List<Repuesto> ListaRepuestos;
+        public static List<Repuesto> listPorCodigoCategoria;
 
         static void Main(string[] args)
         {
             //List<Categoria> ListaCategorias = new List<Categoria>();
-            List<Repuesto> ListaProductos = new List<Repuesto>();
+            ListaRepuestos = new List<Repuesto>();
 
-            InstanciaAgregarRepuesto = new Dominio.VentaRepuestos(ListaProductos, "Audi", "San Martin 1");
+            InstanciaVentaRepuestos = new Dominio.VentaRepuestos(ListaRepuestos, "Tienda Tomas", "Av. Córdoba 2122, C1113 CABA");
+
             ListaCategorias = new List<Categoria>();
 
             Categoria generales = new Categoria(0001, "Repuestos Generales");
@@ -37,76 +40,65 @@ namespace VentaRepuestos.InterfazConsola
             ListaCategorias.Add(triciclos);
             ListaCategorias.Add(monopatin);
 
-            Repuesto kitDistribucion = new Repuesto(20001, "Kit de Distibucion", 19901, 205, autos);
-            Repuesto bombaAceite = new Repuesto(20002, "Bomba De Aceite", 13200, 190, autos);
+            Repuesto kitDistribucion = new Repuesto(20001, "Kit de Distibucion", 19901, 20, autos);
+            Repuesto bombaAceite = new Repuesto(20002, "Bomba De Aceite", 13200, 19, autos);
             Repuesto bateriaBosch = new Repuesto(30001, "Bateria 12n5-3b", 5300, 10, motos);
             Repuesto conjuntoCambio = new Repuesto(40001, "Conjunto Cambio", 16036, 50, triciclos);
             Repuesto motorCurrus = new Repuesto(50001, "Motor Currus Panther", 65000, 5, monopatin);
 
-            string tareaARealizar;
-            bool flag = false;
+            ListaRepuestos.Add(kitDistribucion);
+            ListaRepuestos.Add(bombaAceite);
+            ListaRepuestos.Add(bateriaBosch);
+            ListaRepuestos.Add(conjuntoCambio);
+            ListaRepuestos.Add(motorCurrus);
 
             DesplegarBienvenida();
 
-            try
+            string tareaARealizar = "";
+
+            do
             {
-                do
+                try
                 {
+                    bool flag = false;
+
                     DesplegarOpcionesMenu();
                     tareaARealizar = Console.ReadLine();
-                    //DesplegarOpcionesMenu();
-                    //Categoria categoria = new Categoria(0001, "Repuestos Generales");
-                    //Repuesto repuesto = new Repuesto(010101, "Tuerca", 550.15, 823, categoria);
 
                     switch (tareaARealizar.ToUpper())
                     {
                         case "1":
                             AgregarRepuesto();
-                            Console.Write("\r\n¡Tarea Exitosa!\r\n\r\n");
                             break;
                         case "2":
                             QuitarRepuesto();
-                            Console.Write("\r\n¡Tarea Exitosa!\r\n\r\n");
-                            // code block
                             break;
                         case "3":
                             ModificarPrecio();
-                            Console.Write("\r\n¡Tarea Exitosa!\r\n\r\n");
-                            // code block
                             break;
                         case "4":
                             AgregarStock();
-                            Console.Write("\r\n¡Tarea Exitosa!\r\n\r\n");
-                            // code block
                             break;
                         case "5":
                             QuitarStock();
-                            Console.Write("\r\n¡Tarea Exitosa!\r\n\r\n");
-                            // code block
                             break;
                         case "6":
                             TrearPorCategoria();
-                            Console.Write("\r\n¡Tarea Exitosa!\r\n\r\n");
-                            // code block
                             break;
                         case "X":
                             Console.Write("Fin del programa. Saludos!");
                             Thread.Sleep(2500);
-                            // code block
                             break;
                         default:
-                            // code block
                             Console.Write("\r\nERROR. Ingresaste un valor que no existe \r\n");
                             flag = true;
                             break;
                     }     
-                } while (tareaARealizar.ToUpper() != "X");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error general");
-                //throw;
-            }
+                }
+                catch (ErrorAlHacerTareaException ex) {
+                    Console.WriteLine("Volver a empezar");
+                }
+            } while (tareaARealizar.ToUpper() != "X");
         }
 
         public static void DesplegarBienvenida()
@@ -116,101 +108,191 @@ namespace VentaRepuestos.InterfazConsola
 
         public static void DesplegarOpcionesMenu()
         {
-            Console.Write("Para continuar, presione un boton: \r\n");
+            Console.Write("\r\nPara continuar, presione el boton correspondiente y precione Enter: \r\n");
             Console.Write("1. Agregar Repuesto \r\n2. Quitar Repuesto \r\n3. Modificar Precio \r\n4. Agregar Stock \r\n5. Quitar Stock \r\n6. Traer Por Categoria \r\nX. Para salir \r\n");
         }
 
         public static void AgregarRepuesto() {
-            string codigo = IngresarNumero("int", "el numero del codigo del repuesto a agregar");
-            Console.Write("Ingresar nombre del repuesto:\r\n");
-            string nombre = Console.ReadLine();
-            string precio = IngresarNumero("double", "el precio del repuesto a agregar");
-            string stock = IngresarNumero("int", "el stock del repuesto a agregar");
-
-            string codigoCategoria = IngresarNumero("int", "el numero del codigo del repuesto a agregar");
+            int codigo = IngresarNumero<int>("el numero del codigo del repuesto a agregar");
 
             try
             {
-                Categoria categoriaElegida = getCategoriaByCode(Convert.ToInt32(codigoCategoria));
-                Repuesto repuestoAgregado = new Repuesto(Convert.ToInt32(codigo), nombre, Convert.ToInt32(precio), Convert.ToInt32(stock), categoriaElegida);
-                InstanciaAgregarRepuesto.AgregarRepuesto(repuestoAgregado);
+                validarNoExistenciaRepuestosByCode(codigo);
+            }
+            catch (RepuestoYaExisteException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Repuesto ya existente. Si quiere agregar stock presione 4 en las opciones principales");
+                throw new ErrorAlHacerTareaException();
+            }
+
+            Console.Write("Ingresar nombre del repuesto:\r\n");
+            string nombre = Console.ReadLine();
+
+            double precio = IngresarNumero<double>("el precio del repuesto a agregar");
+
+            int stock = IngresarNumero<int>("el stock del repuesto a agregar");
+            try
+            {
+                ValidarStock(stock);
+            }
+            catch (StockCompletoException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Stock Sobrepasado.");
+                throw new ErrorAlHacerTareaException();
+            }
+
+            int codigoCategoria = IngresarNumero<int>("el numero del codigo de la categoria del repuesto a agregar");
+
+            try
+            {
+                Categoria categoriaElegida = getCategoriaByCode(codigoCategoria);
+
+                Repuesto repuestoAAgregar = new Repuesto(codigo, nombre, precio, stock, categoriaElegida);
+
+                InstanciaVentaRepuestos.AgregarRepuesto(repuestoAAgregar);
+
+                Console.WriteLine($"\r\n\r\n¡Tarea Exitosa! Repuesto Agregado: {repuestoAAgregar.Codigo}  - {repuestoAAgregar.Nombre} - $ {repuestoAAgregar.Precio} - {repuestoAAgregar.Stock} - {repuestoAAgregar.Categoria.Nombre}\r\n\r\n");
+
             }
             catch (CategoriaInexistenteException ex)
             {
-                Console.WriteLine("ERROR. Categoria Inexistente");
+                Console.WriteLine("\r\n\r\nERROR. Categoria Inexistente. Solo puede ingresar repuestos a categorias existentes");
+                throw new ErrorAlHacerTareaException();
             }
-        }
-
-        private static Categoria getCategoriaByCode(int codigoCategoria)
-        {
-            Categoria categoriaElegida = null;
-
-            foreach (Categoria c in ListaCategorias)
-            {
-                if (c.Codigo == codigoCategoria) { categoriaElegida = c; }
-            }
-            if (categoriaElegida == null) { throw new CategoriaInexistenteException(); }
-
-            return categoriaElegida;
         }
 
         public static void QuitarRepuesto() {
 
-            string codigo = IngresarNumero("int", "el numero del codigo del repuesto a quitar");
-            List<Repuesto> ListaRepuestos = new List<Repuesto>();
+            int codigo = IngresarNumero<int>("el numero del codigo del repuesto a quitar");
 
-            Dominio.VentaRepuestos InstanciaQuitarRepuestos = new Dominio.VentaRepuestos(ListaRepuestos, "asd", "asd");
+            try
+            {
+                validarExistenciaRepuestosByCode(codigo);
+            }
+            catch (RepuestoNoExisteException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Repuesto no existente. Si quiere quitar un repuesto, debe existir el repuesto");
+                throw new ErrorAlHacerTareaException();
+            }
 
-            InstanciaQuitarRepuestos.QuitarRepuesto(Convert.ToInt32(codigo));
+            Repuesto repuestoAQuitar = getRepuestosByCode(codigo);
+
+            InstanciaVentaRepuestos.QuitarRepuesto(codigo);
+
+            Console.WriteLine($"\r\n\r\n¡Tarea Exitosa! Repuesto Quitado: {repuestoAQuitar.Codigo}  - {repuestoAQuitar.Nombre} - {repuestoAQuitar.Precio} - {repuestoAQuitar.Stock} - {repuestoAQuitar.Categoria.Nombre}\r\n\r\n");
         }
 
         public static void ModificarPrecio() {
-            string codigo = IngresarNumero("int", "el numero del codigo del repuesto");
-            string nuevoPrecio = IngresarNumero("double", "el nuevo precio");
-            List<Repuesto> ListaRepuestos = new List<Repuesto>();
+            int codigo = IngresarNumero<int>("el numero del codigo del repuesto");
 
-            Dominio.VentaRepuestos InstanciaModificarPrecio = new Dominio.VentaRepuestos(ListaRepuestos, "asd", "asd");
+            try
+            {
+                validarExistenciaRepuestosByCode(codigo);
+            }
+            catch (RepuestoNoExisteException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Repuesto no existente. Si quiere modificar el precio de un repuesto, debe existir el repuesto");
+                throw new ErrorAlHacerTareaException();
+            }
 
-            InstanciaModificarPrecio.ModificarPrecio(Convert.ToInt32(codigo), Convert.ToDouble(nuevoPrecio));
+            double nuevoPrecio = IngresarNumero<double>("el nuevo precio");
+
+            Repuesto repuestoAModificar = getRepuestosByCode(codigo);
+
+            InstanciaVentaRepuestos.ModificarPrecio(codigo, nuevoPrecio);
+
+            Console.WriteLine($"\r\n\r\n¡Tarea Exitosa!\r\n\r\nPrecio viejo:{repuestoAModificar.Precio} \r\nPrecio Nuevo: {nuevoPrecio} \r\n\r\nProducto modificado: {repuestoAModificar.Codigo}  - {repuestoAModificar.Nombre} - {nuevoPrecio} - {repuestoAModificar.Stock} - {repuestoAModificar.Categoria.Nombre}\r\n\r\n");
         }
 
         public static void AgregarStock() {
-            string codigo = IngresarNumero("int", "el numero del codigo del repuesto");
-            string cantidad = IngresarNumero("int", "la cantidad agregada");
-            List<Repuesto> ListaRepuestos = new List<Repuesto>();
+            int codigo = IngresarNumero<int>("el numero del codigo del repuesto");
 
-            Dominio.VentaRepuestos InstanciaAgregarStock = new Dominio.VentaRepuestos(ListaRepuestos, "asd", "asd");
             try
             {
-                InstanciaAgregarStock.AgregarStock(Convert.ToInt32(codigo), Convert.ToInt32(cantidad));
+                validarExistenciaRepuestosByCode(codigo);
+            }
+            catch (RepuestoNoExisteException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Repuesto no existente. Si quiere agregar stock, debe existir el repuesto");
+                throw new ErrorAlHacerTareaException();
+            }
+
+            int cantidad = IngresarNumero<int>("la cantidad agregada");
+
+            try
+            {
+                Repuesto repuestoAModificar = getRepuestosByCode(codigo);
+
+                InstanciaVentaRepuestos.AgregarStock(codigo, cantidad);
+
+                Console.WriteLine($"\r\n\r\n¡Tarea Exitosa!\r\n\r\nStock viejo: {repuestoAModificar.Stock - cantidad} \r\nStock nuevo: {repuestoAModificar.Stock } \r\n\r\nProducto modificado: {repuestoAModificar.Codigo}  - {repuestoAModificar.Nombre} - {repuestoAModificar.Precio} - {repuestoAModificar.Stock} - {repuestoAModificar.Categoria.Nombre}\r\n\r\n");
             }
             catch (StockCompletoException ex)
             {
                 Console.WriteLine("ERROR. Stock completo");
+                throw new ErrorAlHacerTareaException();
             }
         }
 
         public static void QuitarStock() {
-            string codigo = IngresarNumero("int", "el numero del codigo del repuesto");
-            string cantidad = IngresarNumero("int", "la cantidad quitada");
-            List<Repuesto> ListaRepuestos = new List<Repuesto>();
+            int codigo = IngresarNumero<int>("el numero del codigo del repuesto");
 
-            Dominio.VentaRepuestos InstanciaQuitarStock = new Dominio.VentaRepuestos(ListaRepuestos, "asd", "asd");
+            try
+            {
+                validarExistenciaRepuestosByCode(codigo);
+            }
+            catch (RepuestoNoExisteException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Repuesto no existente. Si quiere agregar stock, debe existir el repuesto");
+                throw new ErrorAlHacerTareaException();
+            }
 
-            InstanciaQuitarStock.QuitarStock(Convert.ToInt32(codigo), Convert.ToInt32(cantidad));
+            int cantidad = IngresarNumero<int>("la cantidad quitada");
+
+            try
+            {
+                Repuesto repuestoAModificar = getRepuestosByCode(codigo);
+
+                InstanciaVentaRepuestos.QuitarStock(codigo, cantidad);
+
+                Console.WriteLine($"\r\n\r\n¡Tarea Exitosa!\r\n\r\nStock viejo: {repuestoAModificar.Stock + cantidad} \r\nStock nuevo: {repuestoAModificar.Stock} \r\n\r\nProducto modificado: {repuestoAModificar.Codigo}  - {repuestoAModificar.Nombre} - {repuestoAModificar.Precio} - {repuestoAModificar.Stock} - {repuestoAModificar.Categoria.Nombre}\r\n\r\n");
+            }
+            catch (StockNegativoException ex)
+            {
+                Console.WriteLine("ERROR. Stock NO puede ser negativo");
+                throw new ErrorAlHacerTareaException();
+            }
         }
 
         public static void TrearPorCategoria() {
-            string codigoCategoria = IngresarNumero("int", "el numero del codigo de la categoria");
-            List<Repuesto> ListaRepuestos = new List<Repuesto>();
+            int codigoCategoria = IngresarNumero<int>("el numero del codigo de la categoria");
+            try
+            {
+                Categoria categoriaElegida = getCategoriaByCode(codigoCategoria);
 
-            Dominio.VentaRepuestos InstanciaTrearPorCategoria = new Dominio.VentaRepuestos(ListaRepuestos, "asd", "asd");
+                listPorCodigoCategoria = InstanciaVentaRepuestos.TrearPorCategoria(codigoCategoria);
 
-            InstanciaTrearPorCategoria.TrearPorCategoria(Convert.ToInt32(codigoCategoria));
+                if (listPorCodigoCategoria.Count == 0) { Console.WriteLine("\r\nNo se encontro ningún repuesto para dicha categoria"); }
+                else {
+                    foreach (Repuesto r in listPorCodigoCategoria)
+                    {
+                        Console.WriteLine(r.ToString());
+                    }
+                    Console.Write("\r\nSe logro traer los repuestos para dicho codigo ¡Tarea Exitosa!\r\n\r\n");
+                }
+
+            }
+            catch (CategoriaInexistenteException ex)
+            {
+                Console.WriteLine("\r\n\r\nERROR. Categoria Inexistente. Solo puede ingresar repuestos a categorias existentes");
+                throw new ErrorAlHacerTareaException();
+            }
+
         }
 
-        public static string IngresarNumero(string tipo, string input) {
-            string codigo;
+        public static T IngresarNumero<T>(string input)
+        {
+            string value;
             int salidaCodigoInt = 0;
             double salidaCodigoDouble = 0;
             bool flag;
@@ -218,13 +300,26 @@ namespace VentaRepuestos.InterfazConsola
             do
             {
                 Console.WriteLine($"Ingrese {input}");
-                codigo = Console.ReadLine();
-                if (tipo == "int") flag = ValidarEntero(codigo, ref salidaCodigoInt);
-                else if (tipo == "double") flag = ValidarDouble(codigo, ref salidaCodigoDouble);
+                value = Console.ReadLine();
+
+                if (typeof(T) == typeof(int))
+                {
+                    flag = ValidarEntero(value, ref salidaCodigoInt);
+                }
+                else if (typeof(T) == typeof(double)) flag = ValidarDouble(value, ref salidaCodigoDouble);
                 else flag = true;
             } while (flag == false);
 
-            return codigo;
+            T valueReturn = (T)Convert.ChangeType(value, typeof(T));
+
+            return valueReturn;
+        }
+
+        public static void ValidarStock(int stock) {
+            if (stock > 100)
+            {
+                throw new StockCompletoException();
+            }
         }
 
         public static bool ValidarEntero(string numero, ref int salida){
@@ -250,7 +345,11 @@ namespace VentaRepuestos.InterfazConsola
         {
             bool flag = false;
 
-            if (!double.TryParse(registro, out salida))
+            if (registro.Contains("."))
+            {
+                Console.WriteLine("Utilice las ',' (comas) para los centavos. NO utilice puntos bajo ningun punto de vista");
+            }
+            else if (!double.TryParse(registro, out salida))
             {
                 Console.WriteLine("Usted debe ingresar un valor numérico.");
             }
@@ -266,6 +365,43 @@ namespace VentaRepuestos.InterfazConsola
             return flag;
         }
 
+        private static Categoria getCategoriaByCode(int codigoCategoria)
+        {
+            Categoria categoriaElegida = null;
 
+            foreach (Categoria c in ListaCategorias)
+            {
+                if (c.Codigo == codigoCategoria) { categoriaElegida = c; }
+            }
+            if (categoriaElegida == null) { throw new CategoriaInexistenteException(); }
+
+            return categoriaElegida;
+        }
+
+        private static void validarNoExistenciaRepuestosByCode(int codigoRepuesto)
+        {
+            Repuesto validarRepuesto = getRepuestosByCode(codigoRepuesto);
+
+            if (validarRepuesto != null) throw new RepuestoYaExisteException();
+        }
+
+        private static void validarExistenciaRepuestosByCode(int codigoRepuesto)
+        {
+            Repuesto validarRepuesto = getRepuestosByCode(codigoRepuesto);
+
+            if (validarRepuesto == null) throw new RepuestoNoExisteException();
+        }
+
+        private static Repuesto getRepuestosByCode(int codigoRepuesto)
+        {
+            Repuesto repuestoElegido = null;
+
+            foreach (Repuesto r in ListaRepuestos)
+            {
+                if (r.Codigo == codigoRepuesto) { repuestoElegido = r; }
+            }
+
+            return repuestoElegido;
+        }
     }
 }

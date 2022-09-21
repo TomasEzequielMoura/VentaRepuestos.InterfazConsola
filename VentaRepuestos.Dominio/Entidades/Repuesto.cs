@@ -59,7 +59,7 @@ namespace VentaRepuestos.Dominio
         // metodos
         public override string ToString()
         {
-            return $"{Codigo}  - {Nombre} - {Precio} - {Stock} - {Categoria}";
+            return $"{Codigo} - {Nombre} - {Precio} - {Stock} - {Categoria.Nombre}";
         }
     }
 }

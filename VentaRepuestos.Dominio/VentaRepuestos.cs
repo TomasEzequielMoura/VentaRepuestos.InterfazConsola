@@ -41,72 +41,67 @@ namespace VentaRepuestos.Dominio
 
         public void AgregarRepuesto(Repuesto repuesto)
         {
-            //bool permitoAgregar = true;
-
-            foreach (Repuesto r in _listaProducto)
-            {
-                _listaProducto.Add(repuesto);
-            }
+            _listaProducto.Add(repuesto);
 
         }
         public void QuitarRepuesto(int codigo)
         {
-            foreach (Repuesto r in _listaProducto)
+            foreach (Repuesto r in _listaProducto.ToList())
             {
                 if (r.Codigo == codigo) { _listaProducto.Remove(r);  }
             }
         }
         public void ModificarPrecio(int codigo, double nuevoPrecio)
         {
-            try
+            foreach (Repuesto r in _listaProducto)
             {
-                foreach (Repuesto r in _listaProducto)
-                {
-                    if (r.Codigo == codigo) { r.Precio = nuevoPrecio; }
-                }
+                if (r.Codigo == codigo) { r.Precio = nuevoPrecio; }
             }
-            catch (RepuestoInexistenteException ex)
-            {
-                Console.WriteLine("ERROR. El repuesto no existe");
-                throw;
-            }
+
         }
         public void AgregarStock(int codigo, int stockAgregado)
         {
-            int stock = 0;
-            if (stock < 100)
+            // Politica del local, solamente se puede tener 100 productos de stock por producto
+            foreach (Repuesto r in _listaProducto)
             {
-                foreach (Repuesto r in _listaProducto)
+                if (r.Codigo == codigo)
                 {
-                    if (r.Codigo == codigo) { r.Stock = r.Stock + stockAgregado; }
+                    if (r.Stock + stockAgregado <= 100)
+                    {
+                        r.Stock = r.Stock + stockAgregado;
+                    }
+                    else
+                    {
+                        throw new StockCompletoException();
+                    }
                 }
             }
-            else
-            {
-                throw new StockCompletoException();
-            }
         }
+
         public void QuitarStock(int codigo, int stockQuitado)
         {
             foreach (Repuesto r in _listaProducto)
             {
-                if (r.Codigo == codigo) { r.Stock = r.Stock - stockQuitado; }
+                if (r.Codigo == codigo) { 
+                    r.Stock = r.Stock - stockQuitado; 
+                    if (r.Stock < 0) throw new StockNegativoException();
+                }
+
             }
         }
         public List<Repuesto> TrearPorCategoria(int value)
         {
-            //foreach (Contacto c in agenda.Contactos)
-            //{
-            //    Console.WriteLine($"{c.Nombre} - {c.Telefono}");
-            //}
+            List<Repuesto> listPorCodigoCategoria = new List<Repuesto>();
 
-            //for (int i = 0; value > Categoria.Length; i++)
-            //{
-            //    Console.WriteLine($"{c.Nombre} - {c.Telefono}");
-            //}
+            foreach (Repuesto r in _listaProducto)
+            {
+                if (r.Categoria.Codigo == value)
+                {
+                    listPorCodigoCategoria.Add(r);
+                }
+            }
 
-            var retList = new List<Repuesto>();
-            return retList;
+            return listPorCodigoCategoria;
         }
     }
 }
